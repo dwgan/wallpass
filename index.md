@@ -25,11 +25,11 @@ This guide use first method.
 
 Note this guide can only be used by individual users. It is forbidden for commercial use.
 
-# Server
+# How to Set up a Server
 
 Refer to this [site](https://github.com/233boy/v2ray).
 
-# Client on different platforms
+# How to use Client on different platforms
 
 ## Windows/Linux User
 
