@@ -13,7 +13,7 @@ It should be noted that it is illegal to bypass the firewall in legal terms, esp
 
 However, for developers or those with higher education, the firewall significantly reduces work efficiency. Finding reasonable ways to bypass the Great Firewall is a specialized skill.
 
-Technically, you need a server outside the Great Firewall, which is not prohibited. You can redirect your internet requests to this server, allowing it to access websites blocked by the Great Firewall on your behalf and then send the data back to you. In this way, you can indirectly visit those restricted websites.
+So, how to pass the Great Firewall? Technically, you need a server outside the Great Firewall, which is not prohibited. You can redirect your internet requests to this server, allowing it to access websites blocked by the Great Firewall on your behalf and then send the data back to you. In this way, you can indirectly visit those restricted websites.
 
 There are mainly two methods to bypass the Great Firewall. The first method is through VPS providers, who offer overseas VPS servers. Developers can set up proxy services, such as SSR or V2Ray, on these servers to bypass the firewall. This method is stable, reliable, and relatively inexpensive, but it requires a higher technical skill level from the developer.
 
