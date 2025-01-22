@@ -3,8 +3,6 @@ layout: default
 title: Home
 ---
 
-# Introduction
-
 This website introduce the easy way to pass GFW, which can dramatically improve development efficiency.
 
 What is GFW? Please refer to [Wikipedia](https://en.wikipedia.org/wiki/Great_Firewall).
