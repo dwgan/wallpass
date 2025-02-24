@@ -31,7 +31,7 @@ Refer to this [site](https://github.com/233boy/v2ray).
 
 ## Windows/Linux User
 
-Go to this [site](https://github.com/2dust/v2rayN/releases) for APP.
+Go to this [site](https://github.com/2dust/v2rayN/releases) for APP. For RaspberryPI, please refer to this [site](https://github.com/v2fly/v2ray-core/releases).
 
 Refer to this this [site](https://v2rayn.org/) for guide.
 
