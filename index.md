@@ -31,9 +31,9 @@ Refer to this [site](https://github.com/233boy/v2ray).
 
 ## Windows/Linux User
 
-Go to this [site](https://github.com/2dust/v2rayN/releases) for APP. For RaspberryPI, please refer to this [site](https://github.com/v2fly/v2ray-core/releases).
+For Windows/Linux user, please go to this [site](https://github.com/2dust/v2rayN/releases) for APP. For RaspberryPI, please refer to this [site](https://github.com/v2fly/v2ray-core/releases).
 
-Refer to this this [site](https://v2rayn.org/) for guide.
+Refer to this this [site](https://v2rayn.org/) for guide. It is recommended to import nodes information via QR code.
 
 ## IOS User
 
