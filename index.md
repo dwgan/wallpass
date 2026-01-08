@@ -37,7 +37,7 @@ Refer to this this [site](https://v2rayn.org/) for guide. It is recommended to i
 
 ## IOS User
 
-IOS user need to install Shadowrocket, it can only be searched using American Apple account. For [temperal account](https://github.com/Proxy4All/FreeShadowrocket)
+IOS user need to install Shadowrocket, it can only be searched using American Apple account. For [temperal account](https://zy.weiaj.com/post/65)
 
 ## Andriod User
 
