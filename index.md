@@ -25,13 +25,15 @@ Note this guide can only be used by individual users. It is forbidden for commer
 
 # How to Set up a Server
 
-Refer to this [site](https://github.com/233boy/v2ray).
+Refer to [How to Set up a Server](server-setup.md).
 
 # How to use Client on different platforms
 
 ## Windows/Linux User
 
 For Windows/Linux user, please go to this [site](https://github.com/2dust/v2rayN/releases) for APP. For RaspberryPI, please refer to this [site](https://github.com/v2fly/v2ray-core/releases).
+
+For v2rayN, version `6.60` is recommended for this guide. In v2rayN `6.60`, the default local SOCKS port is `10808` and the HTTP port is `10809`. In newer v2rayN versions, the local inbound is implemented as a mixed proxy, and both HTTP and SOCKS can use the same local port such as `10808`. If Codex login fails while using a newer v2rayN version, try v2rayN `6.60` or manually check that Codex is using the expected HTTP/SOCKS proxy port.
 
 Refer to this this [site](https://v2rayn.org/) for guide. It is recommended to import nodes information via QR code.
 
@@ -44,18 +46,3 @@ IOS user need to install Shadowrocket, it can only be searched using American Ap
 Go to this [site](https://github.com/2dust/v2rayNG/releases) for APP.
 
 Refer to this this [site](https://v2rayng.org/) for guide.
-
-<!--
-
-
-## Network Issuse
-
-If you have network issuse, you can alternatively go to this [site](https://pan.baidu.com/s/17xk5Nr36yJWJl4FJRg7J0g?pwd=pvf8) for backup version (not the latest version). *Contact Administrator for password.*
-
-After downloading the .zip file, exact it into a folder
-
-Run v2rayN.exe directly.
-
-Enjoy it
-
--->
