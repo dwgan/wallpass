@@ -1,8 +1,31 @@
 <nav style="display:flex;flex-wrap:wrap;gap:1rem;padding:0.6rem 0;margin-bottom:1.2rem;border-bottom:1px solid #e1e4e8;font-size:0.9rem;" aria-label="Site navigation">
+  {% if page.lang == 'zh' %}
+  <a href="{{ '/zh-cn/' | relative_url }}">首页</a>
+  <a href="{{ '/zh-cn/networking-basics.html' | relative_url }}">网络基础</a>
+  <a href="{{ '/zh-cn/how-the-gfw-works.html' | relative_url }}">GFW 原理</a>
+  <a href="{{ '/zh-cn/proxy-and-tunnels.html' | relative_url }}">代理与隧道</a>
+  <a href="{{ '/zh-cn/server-setup.html' | relative_url }}">搭建服务器</a>
+  <a href="{{ '/zh-cn/client-setup.html' | relative_url }}">客户端配置</a>
+  {% assign en_path = page.path | remove_first: 'zh-cn/' | replace: '.md', '.html' %}
+  {% if en_path == 'index.html' %}
+    {% assign other_url = '/' %}
+  {% else %}
+    {% assign other_url = '/' | append: en_path %}
+  {% endif %}
+  <a href="{{ other_url | relative_url }}" style="margin-left:auto;">English</a>
+  {% else %}
   <a href="{{ '/' | relative_url }}">Home</a>
   <a href="{{ '/networking-basics.html' | relative_url }}">Internet Basics</a>
   <a href="{{ '/how-the-gfw-works.html' | relative_url }}">How the GFW Works</a>
   <a href="{{ '/proxy-and-tunnels.html' | relative_url }}">Proxies &amp; Tunnels</a>
   <a href="{{ '/server-setup.html' | relative_url }}">Server Setup</a>
   <a href="{{ '/client-setup.html' | relative_url }}">Client Setup</a>
+  {% assign zh_path = 'zh-cn/' | append: page.path | replace: '.md', '.html' %}
+  {% if zh_path == 'zh-cn/index.html' %}
+    {% assign other_url = '/zh-cn/' %}
+  {% else %}
+    {% assign other_url = '/' | append: zh_path %}
+  {% endif %}
+  <a href="{{ other_url | relative_url }}" style="margin-left:auto;">中文</a>
+  {% endif %}
 </nav>
