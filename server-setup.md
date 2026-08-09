@@ -1,9 +1,11 @@
 ---
-layout: default
+layout: doc
 title: How to Set up a Server
 ---
 
 # How to Set up a Server
+
+> **Before you begin:** if you are new to this topic, read [How Proxies and Tunnels Work](proxy-and-tunnels.md) first — it explains the ideas behind VLESS and REALITY.
 
 This guide uses the following stack:
 
@@ -94,7 +96,7 @@ After rebooting, reconnect through SSH before continuing.
 
 ## 2. Move the domain DNS to Cloudflare
 
-This step is optional, but it is recomended if you need to remember the IP easily.
+This step is optional, but it is recommended if you need to remember the IP easily.
 
 Add your Alibaba Cloud domain to Cloudflare, then copy the two nameservers provided by Cloudflare.
 
@@ -259,3 +261,11 @@ x-ui
 Use the `x-ui` command to manage 3x-ui, including panel settings, updates, and service restart.
 
 For security, do not share the panel address, panel password, private key, or client UUID. If a node is leaked, delete that client in 3x-ui and create a new one.
+
+## Previous
+
+[How Proxies and Tunnels Work](proxy-and-tunnels.md) — the ideas behind this setup.
+
+## Up next
+
+[How to Use Clients on Different Platforms](client-setup.md) — connect your devices to the finished server.

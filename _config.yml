@@ -1,0 +1,6 @@
+title: Wallpass
+description: A beginner-friendly guide to how the internet works, how the Great Firewall blocks traffic, and how proxies and tunnels help developers work efficiently.
+url: https://wallpass.stacc.top
+remote_theme: pages-themes/primer@v0.6.0
+plugins:
+  - jekyll-remote-theme
