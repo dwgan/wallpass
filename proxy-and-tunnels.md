@@ -5,9 +5,9 @@ title: Proxies and Tunnels
 
 # How Proxies and Tunnels Work
 
-## The core idea
+## 1. The core idea: a friend abroad who fetches things for you
 
-If the direct connection to a blocked site is cut, the fix is to avoid connecting directly. Instead, your computer connects to a **proxy server** located outside the firewall — that connection is allowed — and asks it to fetch the blocked content on your behalf. The proxy server then relays the response back through the same connection.
+Imagine a store only sells in a country you cannot enter, but a friend who lives there can buy anything for you and send it back. That friend is your **proxy server**: a machine outside the firewall that can reach the blocked website, fetches it on your behalf, and sends the result back to you. You never talk to the blocked site directly.
 
 <pre class="mermaid">
 flowchart LR
@@ -24,35 +24,73 @@ flowchart LR
     end
 </pre>
 
-## Proxies, VPNs, and tunnels
+## 2. Step by step: what happens inside a proxied connection
 
-These words are often used loosely; the practical difference is mostly scope:
+<pre class="mermaid">
+sequenceDiagram
+    participant A as Your app
+    participant L as Local client (v2rayN)
+    participant P as Proxy server abroad
+    participant S as Target website
+    A->>L: 1. Request to blocked site
+    L->>P: 2. Encrypted tunnel: proxy sees the target
+    P->>S: 3. Normal request to the target
+    S-->>P: 4. Response
+    P-->>L: 5. Encrypted tunnel: response back
+    L-->>A: 6. Decrypted response
+</pre>
 
-- An **HTTP or SOCKS proxy** is a forwarding service for a specific application. Your browser (or other software) sends its traffic to the proxy, and the proxy forwards it to the destination. SOCKS5 can carry many kinds of traffic, not just web pages.
-- A **VPN** creates an encrypted tunnel for your whole device (or a large part of its traffic). All traffic inside the tunnel is protected, not just one app.
-- A **tunnel** is the general idea: an encrypted connection between two endpoints. Proxy protocols such as VLESS or Trojan run inside a tunnel.
+1. Your app asks the local client (for example v2rayN) to fetch a blocked site.
+2. The local client wraps the request in an encrypted tunnel and sends it to the proxy server abroad.
+3. The proxy server, which can reach anything, sends a normal request to the target.
+4. The target responds to the proxy.
+5. The proxy wraps the response in the same encrypted tunnel.
+6. Your local client decrypts it and hands it to your app.
 
-## VLESS and Trojan
+## 3. What an "encrypted tunnel" actually is
 
-Modern proxy protocols separate "how the tunnel is encrypted" from "how the tunnel is disguised."
+A tunnel is not a wire — it is an agreement to put one message inside another. Your request becomes the payload of a new packet whose destination is the proxy server. On the wire, an observer sees only "a connection to the proxy server", not the message inside. The inner message is encrypted, so only the proxy server can open it.
 
-- **Trojan** is designed to look like a normal HTTPS connection to a real website. To an observer, the traffic is indistinguishable from ordinary web browsing, so keyword filtering does not apply.
-- **VLESS** is a lightweight protocol without built-in encryption of its own; it is normally paired with TLS or with **REALITY**. REALITY makes the TLS handshake appear to be a connection to a real, mainstream website (in this guide's setup, `www.amd.com`), and it does not require you to own a certificate or even a domain for the proxy itself. This disguise also resists active probing, because the firewall "sees" a plausible, real handshake.
+<pre class="mermaid">
+flowchart LR
+    A[Your request: GET blocked-site] --> B[Encrypted inside a tunnel packet]
+    B --> C[On the wire, only the proxy address is visible]
+    C --> D[Proxy decrypts and forwards the inner request]
+</pre>
 
-This is why the server guide configures `VLESS + TCP + REALITY + Vision` with a public target like `www.amd.com`: the traffic looks like an ordinary visit to that site.
+## 4. Proxies, VPNs, and tunnels: what the words mean
 
-## Self-hosted VPS or "airport"?
+- An **HTTP or SOCKS proxy** forwards traffic for a specific application. SOCKS5 can carry many kinds of traffic, not just web pages.
+- A **VPN** creates an encrypted tunnel for your whole device (or most of its traffic).
+- A **tunnel** is the general idea: an encrypted connection between two endpoints. Protocols such as VLESS or Trojan run inside a tunnel.
 
-There are two ways to obtain a proxy server:
+## 5. Making the tunnel look normal: VLESS, Trojan, and REALITY
+
+Encryption hides the contents, but a connection to a strange server at a strange port still looks suspicious. The second problem is **disguise**:
+
+- **Trojan** mimics a normal HTTPS connection to a real website. To an observer, the traffic is indistinguishable from ordinary web browsing.
+- **VLESS** is a lightweight protocol with no encryption of its own; it is normally paired with TLS or with **REALITY**. REALITY makes the TLS handshake look like a visit to a real, mainstream website (in this guide, `www.amd.com`) — the firewall "sees" a plausible handshake and cannot tell the difference.
+
+<pre class="mermaid">
+flowchart LR
+    subgraph visitor[Real user visiting amd.com]
+        A[Handshake with amd.com] --> B[Looks like normal HTTPS]
+    end
+    subgraph you[Your REALITY connection]
+        C[Handshake presented as amd.com] --> D[Looks like normal HTTPS]
+    end
+</pre>
+
+## 6. Self-hosted VPS or "airport"?
 
 | Option | Effort | Cost | Control |
 | --- | --- | --- | --- |
-| Self-hosted VPS | Higher: you configure and maintain the server | Lower, predictable (one VPS bill) | Full: you know exactly what runs on it |
-| Airport service | Low: just import a subscription | Subscription fee | None: someone else operates it |
+| Self-hosted VPS | Higher: you configure and maintain it | Lower, predictable (one VPS bill) | Full: you know exactly what runs on it |
+| Airport service | Low: import a subscription | Subscription fee | None: someone else operates it |
 
-This guide covers the first option because it is educational, reliable, and gives you full control. If you use the second option, be aware that you are entrusting your traffic to a third party.
+This guide covers the first option because it is educational, reliable, and gives you full control. If you use the second option, remember that you are entrusting your traffic to a third party.
 
-## A note on legality
+## 7. A note on legality
 
 Bypassing internet restrictions may be restricted or illegal in some jurisdictions, and providing these services to others for profit is explicitly outside the scope of this guide. This material is for individual, educational use — the same boundary stated on the home page. Please understand and follow the laws that apply to you.
 

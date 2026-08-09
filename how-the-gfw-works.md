@@ -5,33 +5,40 @@ title: How the GFW Works
 
 # How the Great Firewall Works
 
-## What it is
+## 1. What it is
 
-The **Great Firewall (GFW)** is the name commonly used for the set of filtering systems that sit between networks inside mainland China and the rest of the internet. Its goal is to restrict access to specific websites and services. Understanding how it blocks traffic tells us what a working bypass must do.
+The **Great Firewall (GFW)** is the name commonly used for a set of filtering systems positioned between networks inside mainland China and the rest of the internet. Think of it as a checkpoint on the highway: every connection that passes into or out of the country is inspected, and some are turned away. Understanding how it blocks traffic tells us what a working bypass must do.
 
-## What an observer can see
+## 2. Following a connection: what the firewall sees at each step
 
-From the previous page, even encrypted HTTPS traffic leaves metadata in the open. A firewall watching a connection sees:
+Let us follow a single connection to a website, step by step, and mark what the firewall can observe at each stage:
 
-- destination **IP address** and **port**,
-- **DNS queries** for domain names,
-- packet timing and sizes,
-- the **SNI** field in the TLS handshake, which usually contains the domain name,
-- the plaintext content of any unencrypted traffic.
+<pre class="mermaid">
+flowchart TD
+    A[1. DNS query for example.com] -->|visible: the domain name| B[2. TCP connection to server IP:443]
+    B -->|visible: the IP and port| C[3. TLS handshake - SNI carries the domain]
+    C -->|visible: SNI, certificate, sizes| D[4. Encrypted data flows]
+    D -->|visible: timing and volume, not content| E[5. Connection closes]
+</pre>
 
-All of these can be used to make blocking decisions.
+- **Step 1, DNS:** the firewall sees which domain you are asking about.
+- **Step 2, TCP:** it sees which server IP and port you are connecting to.
+- **Step 3, TLS handshake:** encryption has not started yet — the **SNI** field still carries the domain name in plaintext, along with details like the TLS version and fingerprint.
+- **Steps 4–5:** the content is encrypted, but the firewall can still measure when traffic flows and how much of it there is.
 
-## Blocking techniques
+This is the key insight: **the firewall does not need to read your data. It only needs to recognize the connection.**
 
-**1. IP blocklisting.** Known IP addresses or whole ranges belonging to blocked services are simply not routed, or connections to them are dropped. This is coarse: it blocks everything hosted at those addresses.
+## 3. The blocking techniques
 
-**2. DNS poisoning.** The firewall answers DNS queries for blocked domains with a fake IP address. The client connects to the fake address and gets nothing, so the site appears unreachable.
+**1. IP blocklisting — a bouncer with a list.** Known IP addresses or whole ranges are dropped or not routed. It is coarse: it blocks everything hosted at those addresses.
 
-**3. TCP reset injection.** To kill an active connection, an attacker on the path can send a forged TCP **RST** packet that looks like it comes from one of the two endpoints. Both sides see the connection as "closed" and give up.
+**2. DNS poisoning — directory assistance gives a wrong number.** The firewall answers DNS queries for blocked domains with a fake IP. Your computer connects to a dead address and the site appears unreachable.
 
-**4. SNI-based filtering.** When a client starts a TLS connection, it sends the domain name in the SNI field before encryption begins. A firewall can read that field and inject a reset — so connections to blocked domains die during the handshake.
+**3. TCP RST injection — a forged "return to sender" notice.** To kill an active connection, an attacker on the path sends a fake TCP **RST** packet that looks like it comes from one of the two endpoints. Both sides believe the connection closed and give up.
 
-**5. Deep packet inspection.** For unencrypted traffic, the firewall can read the payload directly and block requests that contain filtered keywords.
+**4. SNI-based filtering — reading the name on the envelope.** During the TLS handshake the domain name is visible in the SNI field. The firewall can match it against a blocklist and inject a reset, so the connection dies before anything is exchanged.
+
+**5. Deep packet inspection — opening unsealed mail.** For unencrypted traffic, the firewall reads the payload directly and blocks requests containing filtered keywords.
 
 <pre class="mermaid">
 flowchart TD
@@ -50,15 +57,17 @@ flowchart TD
     end
 </pre>
 
-## What this means for a bypass
+## 4. Why encryption alone is not enough
 
-A working bypass needs three things:
+HTTPS hides the contents of your messages, but the firewall still sees the outside of the envelope: the destination IP, the SNI domain, and the traffic pattern. Blocking is a recognition problem, not a reading problem. That is why merely "using HTTPS" does not bypass anything — the connection still looks like a connection to a blocked service.
 
-1. a **server outside the firewall** — the blocked content is fetched there, where it is reachable;
-2. **encryption** — so the content of your traffic cannot be read or filtered by keyword;
-3. **traffic that does not look blocked** — otherwise the firewall will simply recognize the connection and reset it.
+## 5. What a working bypass must do
 
-That third point is the hard part. Simply encrypting a connection is not enough if the firewall can still see the destination IP or read the SNI field. The next page explains how proxies and tunnels handle all three.
+1. a **server outside the firewall** — the blocked content is fetched where it is reachable;
+2. **encryption** — so the content cannot be read or keyword-filtered;
+3. **traffic that does not look blocked** — so the firewall does not recognize the connection and reset it.
+
+The third point is the hard part, and it is exactly what the next page is about.
 
 ## Up next
 
